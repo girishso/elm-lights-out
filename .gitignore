@@ -2,3 +2,4 @@ App/build
 node_modules
 elm-stuff
 .DS_Store
+public
