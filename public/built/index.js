@@ -10101,82 +10101,143 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _user$project$Main$showCurrentPlayer = function (player) {
-	var _p0 = player;
-	if (_p0.ctor === 'Just') {
-		return _p0._0;
-	} else {
-		return '';
-	}
+var _user$project$Main$isSolved = function (model) {
+	return _elm_lang$core$Array$isEmpty(
+		A2(
+			_eeue56$elm_flat_matrix$Matrix$filter,
+			function (c) {
+				return _elm_lang$core$Native_Utils.eq(c, true);
+			},
+			model.isOn));
+};
+var _user$project$Main$drawWin = function (model) {
+	return _user$project$Main$isSolved(model) ? A2(
+		_elm_lang$html$Html$h1,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text('Win!!')
+			])) : A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+var _user$project$Main$toggleLight = F4(
+	function (curPosition, iy, ix, isOn) {
+		var _p0 = 2;
+		return (_elm_lang$core$Native_Utils.eq(ix, curPosition.x) && _elm_lang$core$Native_Utils.eq(iy, curPosition.y)) ? _elm_lang$core$Basics$not(isOn) : ((_elm_lang$core$Native_Utils.eq(ix, curPosition.x - 1) && _elm_lang$core$Native_Utils.eq(iy, curPosition.y)) ? _elm_lang$core$Basics$not(isOn) : ((_elm_lang$core$Native_Utils.eq(ix, curPosition.x) && _elm_lang$core$Native_Utils.eq(iy, curPosition.y - 1)) ? _elm_lang$core$Basics$not(isOn) : ((_elm_lang$core$Native_Utils.eq(ix, curPosition.x + 1) && _elm_lang$core$Native_Utils.eq(iy, curPosition.y)) ? _elm_lang$core$Basics$not(isOn) : ((_elm_lang$core$Native_Utils.eq(ix, curPosition.x) && _elm_lang$core$Native_Utils.eq(iy, curPosition.y + 1)) ? _elm_lang$core$Basics$not(isOn) : isOn))));
+	});
+var _user$project$Main$init = {
+	isOn: A3(_eeue56$elm_flat_matrix$Matrix$repeat, 5, 5, true)
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var chooseNextPlayer = F2(
-			function (current, players) {
-				var p = _elm_lang$core$List$head(
-					A2(
-						_elm_lang$core$List$filter,
-						function (x) {
-							return !_elm_lang$core$Native_Utils.eq(x, current);
-						},
-						players));
-				var _p1 = p;
-				if (_p1.ctor === 'Just') {
-					return _p1._0;
-				} else {
-					return _elm_lang$core$Maybe$Just('');
-				}
-			});
-		var _p2 = msg;
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				isOn: _elm_lang$core$Basics$not(model.isOn),
-				currentPlayer: A2(chooseNextPlayer, model.currentPlayer, model.players)
-			});
+		var _p1 = A2(_elm_lang$core$Debug$log, 'update:', msg);
+		if (_p1.ctor === 'Toggle') {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					isOn: A2(
+						_eeue56$elm_flat_matrix$Matrix$indexedMap,
+						_user$project$Main$toggleLight(_p1._0),
+						model.isOn)
+				});
+		} else {
+			return _user$project$Main$init;
+		}
 	});
-var _user$project$Main$init = {
-	isOn: true,
-	currentPlayer: _elm_lang$core$Maybe$Just('A'),
-	players: _elm_lang$core$Native_List.fromArray(
-		[
-			_elm_lang$core$Maybe$Just('A'),
-			_elm_lang$core$Maybe$Just('B')
-		])
+var _user$project$Main$Model = function (a) {
+	return {isOn: a};
 };
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {isOn: a, currentPlayer: b, players: c};
+var _user$project$Main$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
 	});
-var _user$project$Main$Toggle = {ctor: 'Toggle'};
-var _user$project$Main$view = function (model) {
+var _user$project$Main$Restart = {ctor: 'Restart'};
+var _user$project$Main$Toggle = function (a) {
+	return {ctor: 'Toggle', _0: a};
+};
+var _user$project$Main$cell = F3(
+	function (x, y, isOn) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{
+							ctor: '_Tuple2',
+							_0: 'background-color',
+							_1: isOn ? 'orange' : 'grey'
+						},
+							{ctor: '_Tuple2', _0: 'width', _1: '80px'},
+							{ctor: '_Tuple2', _0: 'height', _1: '80px'},
+							{ctor: '_Tuple2', _0: 'border-radius', _1: '4px'},
+							{ctor: '_Tuple2', _0: 'margin', _1: '2px'},
+							{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'}
+						])),
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$Main$Toggle(
+						{x: x, y: y}))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(x),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							', ',
+							_elm_lang$core$Basics$toString(y))))
+				]));
+	});
+var _user$project$Main$drawBoard = function (isOn) {
+	var height = _eeue56$elm_flat_matrix$Matrix$height(isOn);
+	var drawrow = function (row) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Array$toList(
+				A2(
+					_elm_lang$core$Array$indexedMap,
+					_user$project$Main$cell(row),
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						_elm_lang$core$Array$empty,
+						A2(_eeue56$elm_flat_matrix$Matrix$getRow, row, isOn)))));
+	};
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
+		A2(
+			_elm_lang$core$List$map,
+			drawrow,
+			_elm_lang$core$Native_List.range(0, height)));
+};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('container')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$style(
-						_elm_lang$core$Native_List.fromArray(
-							[
-								{
-								ctor: '_Tuple2',
-								_0: 'background-color',
-								_1: model.isOn ? 'orange' : 'grey'
-							},
-								{ctor: '_Tuple2', _0: 'width', _1: '80px'},
-								{ctor: '_Tuple2', _0: 'height', _1: '80px'},
-								{ctor: '_Tuple2', _0: 'border-radius', _1: '4px'},
-								{ctor: '_Tuple2', _0: 'margin', _1: '2px'}
-							])),
-						_elm_lang$html$Html_Events$onClick(_user$project$Main$Toggle)
-					]),
+					[]),
 				_elm_lang$core$Native_List.fromArray(
-					[])),
+					[
+						_user$project$Main$drawBoard(model.isOn)
+					])),
 				A2(
 				_elm_lang$html$Html$hr,
 				_elm_lang$core$Native_List.fromArray(
@@ -10184,25 +10245,35 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[])),
 				A2(
-				_elm_lang$html$Html$h2,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
+				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'currentPlayer: ',
-							_user$project$Main$showCurrentPlayer(model.currentPlayer)))
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$Restart)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Restart')
 					])),
 				A2(
-				_elm_lang$html$Html$pre,
+				_elm_lang$html$Html$hr,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				_user$project$Main$drawWin(model),
+				A2(
+				_elm_lang$html$Html$hr,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(model))
+						_eeue56$elm_flat_matrix$Matrix_Extra$prettyPrint(model.isOn)
 					]))
 			]));
 };
