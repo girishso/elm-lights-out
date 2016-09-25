@@ -10105,9 +10105,10 @@ var _user$project$Main$isSolved = function (model) {
 	return _elm_lang$core$Array$isEmpty(
 		A2(
 			_eeue56$elm_flat_matrix$Matrix$filter,
-			function (c) {
-				return _elm_lang$core$Native_Utils.eq(c, true);
-			},
+			F2(
+				function (x, y) {
+					return _elm_lang$core$Native_Utils.eq(x, y);
+				})(true),
 			model.isOn));
 };
 var _user$project$Main$drawWin = function (model) {
@@ -10137,7 +10138,7 @@ var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p1 = A2(_elm_lang$core$Debug$log, 'update:', msg);
 		if (_p1.ctor === 'Toggle') {
-			return _elm_lang$core$Native_Utils.update(
+			return _user$project$Main$isSolved(model) ? model : _elm_lang$core$Native_Utils.update(
 				model,
 				{
 					isOn: A2(

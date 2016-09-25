@@ -41,7 +41,10 @@ update msg model =
     --   _
     case Debug.log "update:" msg of
         Toggle position ->
-            { model | isOn = Matrix.indexedMap (toggleLight position) model.isOn }
+            if isSolved model then
+                model
+            else
+                { model | isOn = Matrix.indexedMap (toggleLight position) model.isOn }
 
         Restart ->
             init
@@ -94,7 +97,7 @@ drawWin model =
 isSolved : Model -> Bool
 isSolved model =
     model.isOn
-        |> Matrix.filter (\c -> c == True)
+        |> Matrix.filter ((==) True)
         |> Array.isEmpty
 
 
