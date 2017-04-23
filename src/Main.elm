@@ -115,16 +115,10 @@ drawBoard isOn =
 
         height =
             Matrix.height isOn
-
-        -- Matrix.indexedMap cell model.isOn
     in
-        --[0..height] |> drawrow
-        List.map drawrow [0..height]
+        List.range 0 height
+            |> List.map drawrow
             |> div []
-
-
-
---|> div []
 
 
 cell : Int -> Int -> Bool -> Html Msg

@@ -1,13 +1,21 @@
 <html>
   <head>
-    <title>Elm!</title>
+    <title>Lights out game in Elm</title>
     <script src="built/index.js" charset="utf-8"></script>
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="main.css">
   </head>
 
   <body>
+    <div class="header">
+      <h1>Lights out game in Elm</h1>
+      <a href="https://en.wikipedia.org/wiki/Lights_Out_(game)">Read about</a> Lights Out game.
+
+      <a href="https://github.com/girishso/elm-lights-out">Source code</a>
+    </div>
+
     <div id="app"></div>
+
     <script>
       Elm.Main.embed(document.getElementById("app"))
     </script>
